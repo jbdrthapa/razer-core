@@ -1,0 +1,1 @@
+Razer core data provider
