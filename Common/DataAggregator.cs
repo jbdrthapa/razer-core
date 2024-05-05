@@ -10,12 +10,14 @@ public class DataAggregator : IDataAggregator
     private readonly IHostedService _hostedService;
     private readonly CancellationTokenSource _cancellationTokenSource;
     private readonly ILogger<DataAggregator> _logger;
+    private readonly IMessagingService _messagingService;
 
-    public DataAggregator(ILogger<DataAggregator> logger, IHostedService hostedService)
+    public DataAggregator(ILogger<DataAggregator> logger, IHostedService hostedService, IMessagingService messagingService)
     {
         _logger = logger;
         _hostedService = hostedService;
         _cancellationTokenSource = new CancellationTokenSource();
+        _messagingService = messagingService;
     }
 
     public async Task SubscribeAsync()

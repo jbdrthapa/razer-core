@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -6,28 +7,30 @@ namespace RazerCore.Services;
 
 public class RazerHostedService : IHostedService, IDisposable
 {
-
-    private bool _disposed = false;
     private readonly ILogger<RazerHostedService> _logger;
-    private readonly IMessagingService _messagingService;
-
+    private readonly IShellService _shellService;
     private readonly object _timerSync;
-
     private Timer? _timer = null;
 
-    public RazerHostedService(ILogger<RazerHostedService> logger, IMessagingService messagingService)
+    private const int TimerIntervalSecs = 20;
+
+    private bool _disposed = false;
+
+    public RazerHostedService(ILogger<RazerHostedService> logger, IShellService shellService)
     {
         _timerSync = new object();
         _logger = logger;
-        _messagingService = messagingService;
+        _shellService = shellService;
     }
+
+    public string? RazerData { get; private set; }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
         lock (_timerSync)
         {
             _logger.LogInformation("Starting Razer hosted service ...");
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(TimerIntervalSecs));
             _logger.LogInformation("Started.");
 
             return Task.CompletedTask;
@@ -76,6 +79,17 @@ public class RazerHostedService : IHostedService, IDisposable
         lock (_timerSync)
         {
             _logger.LogInformation("callback Razer hosted service ");
+
+            ProcessCPUData();
         }
     }
+
+    private void ProcessCPUData()
+    {
+
+
+    }
+
+
+
 }

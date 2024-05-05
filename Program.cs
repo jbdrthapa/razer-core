@@ -45,6 +45,7 @@ public class RazerCore
         var services = new ServiceCollection()
         .AddLogging(builder => builder.AddConsole())
         .AddHostedService<RazerHostedService>()
+        .AddSingleton<IShellService, ShellService>()
         .AddSingleton<IDataAggregator, DataAggregator>()
         .AddSingleton<IMessagingService, MessagingService>()
         .AddNats(1, (opts) => new NatsOpts()
