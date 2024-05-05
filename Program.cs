@@ -46,6 +46,7 @@ public class RazerCore
         .AddLogging(builder => builder.AddConsole())
         .AddHostedService<RazerHostedService>()
         .AddSingleton<IDataAggregator, DataAggregator>()
+        .AddSingleton<IMessagingService, MessagingService>()
         .AddNats(1, (opts) => new NatsOpts()
         {
             Url = "127.0.0.1:4222"
